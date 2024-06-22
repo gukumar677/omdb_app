@@ -22,7 +22,7 @@ function Home() {
           setError(error);
         });
     }
-  }, [searchClicked, movie, searchTerm]);
+  });
 
   function handleChange(event) {
     setSearchTerm(event.target.value);
@@ -73,7 +73,7 @@ function Home() {
           </p>
         )}
       </div>
-    </>
+  </>
   );
 }
 
