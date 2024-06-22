@@ -3,18 +3,18 @@ import React, { useEffect, useState } from "react";
 import MovieCard from "../Components/MovieCard";
 
 function Home() {
-  const [movie, setMovie] = useState();
+  const [movies, setMovies] = useState();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchClicked, setSearchClicked] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (searchClicked) {
+    if (searchClicked & (searchTerm != "")) {
       axios
-        .get(`https://www.omdbapi.com/?apikey=bc509e0a&t=${searchTerm}`)
-        .then((movie) => {
-          console.log(movie.data);
-          setMovie(movie.data);
+        .get(`https://www.omdbapi.com/?apikey=bc509e0a&s=${searchTerm}`)
+        .then((res) => {
+          console.log(res.data);
+          setMovies(res.data);
           setSearchClicked(false);
         })
         .catch((error) => {
@@ -26,12 +26,10 @@ function Home() {
 
   function handleChange(event) {
     setSearchTerm(event.target.value);
-    console.log("value:", searchTerm);
   }
 
   function SearchHandler() {
     setSearchClicked(true);
-    console.log(searchClicked);
   }
 
   return (
@@ -52,28 +50,28 @@ function Home() {
             Search
           </button>
         </div>
-        {movie ? (
-          movie.Response == "True" ? (
-            <MovieCard
-              image={movie.Poster}
-              title={movie.Title}
-              actors={movie.Actors}
-              director={movie.Director}
-              plot={movie.Plot}
-              imdbRating={movie.imdbRating}
-              boxOffice={movie.BoxOffice}
-              language={movie.Language}
-            />
+      </div>
+
+      <div className="w-[80vw] mx-[200px] flex gap-3 flex-wrap mt-10">
+        {movies ? (
+          movies.Response == "True" ? (
+            movies.Search.map((movie) => (
+              <MovieCard
+                image={movie.Poster}
+                title={movie.Title}
+                imdbID={movie.imdbID}
+              />
+            ))
+          ) : movies.Response == "False" ? (
+            <p className="text-center text-2xl mx-auto mt-20">{movies.Error}</p>
           ) : (
-            <p className="text-center text-2xl mx-auto mt-20">{movie.Error}</p>
+            ""
           )
         ) : (
-          <p className="text-center text-2xl mx-auto mt-20">
-            {error ? error.message : ""}
-          </p>
+          ""
         )}
       </div>
-  </>
+    </>
   );
 }
 

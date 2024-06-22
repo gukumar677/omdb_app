@@ -2,6 +2,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import About from "./pages/About";
+import MovieDetails from "./pages/MovieDetails";
 
 function App() {
   return (
@@ -10,17 +11,17 @@ function App() {
         <h1 className="text-xl text-black py-4">OMDB App</h1>
         <div className="text-xl flex gap-5">
           <Link to="/">
-          <p>Home</p>
+            <p>Home</p>
           </Link>
           <Link to="/about">
-          <p>About</p>
+            <p>About</p>
           </Link>
-          
         </div>
       </div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/movie/:imdbID" element={<MovieDetails />} />
       </Routes>
     </>
   );
